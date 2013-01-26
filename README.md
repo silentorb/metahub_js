@@ -7,20 +7,22 @@ In traditional programming, references are one way. By default, when an entity r
 
 Now what if the file was aware that a program was looking to it for configuration information? If the file was aware of all the programs pointing at it, then when the file was moved it could notify all of those programs about its new location.
 
-While MetaHub does not solve such issues in the file system, it does solve them in general programming. It provides a mechanism by which objects can easily define bidirectional references (known as "connections" or "relationships") to each other.  When something happens to one of these special objects, it can notify any or all of the objects it is connected to.
+While MetaHub does not solve such issues in the file system, it does solve them in general programming. It provides a mechanism by which objects can easily define bidirectional references (known as "connections") to each other.  When something happens to one of these special objects, it can notify any or all of the objects it is connected to.
 
-This bidirectional approach is very powerful, but it is also not as resource efficient as the traditional one-way approach.  Because of that, and the fact that most software is not written bidirectional, MetaHub is designed to easily integrate with more traditional programming so that you can smoothly mix the two.  It's not practical to define everything as a Meta_Connection.
+This bidirectional approach is very powerful, but it is also not as resource efficient as the traditional one-way method.  Because of that, and the fact that most software is not written bidirectional, MetaHub is designed to easily integrate with more traditional programming so that you can smoothly mix the two.  It is not practical to define everything as a Meta_Connection.
 
-When two meta_objects are connected, labels are used to categorize how the two meta_objects relate to each other.
+In MetaHub, a connection is the bidirectional reference between two objects, while a relationship is the data and rules that define how a particular connection behaves.  Type labels are the core of defining relationships.  When two meta_objects are connected, labels are used to categorize how the two meta_objects relate to each other.  For example:
 
 ```javascript
 
 hero.connect(sword, 'equipment', 'wielder');
 hero.connect(helmet, 'equipment', 'wielder');
 hero.connect(doggie, 'sidekick', 'master');
+
+equipment = hero.get_connections('equipment');
 ```
 
-In this example, a sword and a helmet are connected to the hero, while the doggie is set to be his sidekick.  In traditional programming, this would look like:
+Here a sword and a helmet are connected to the hero, while the doggie becomes his sidekick.  In traditional programming this would look like:
 
 ```javascript
 
@@ -30,9 +32,38 @@ hero.equipment.push(helment);
 helment.wielder = hero;
 hero.sidekick = doggie;
 doggie.master = hero;
+
+equipment = hero.equipment;
 ```
 
+Aside from syntax, there is a key difference between these two examples. In the traditional approach, *hero.equipment* and *hero.sidekick* would be separate properties of the hero and have no inherent awareness of each other. With MetaHub's *connect()* method, all of the meta_object's connections are stored in a single list.  This allows MetaHub to streamline and automate certain patterns that programmers normally have to do it manually. This is best demonstrated with how MetaHub handles parent-child relationships.
 
+Parents and Children
+------------------------------
+
+By themselves connection labels don't do very much.  They become more useful when code such as an events is attached to particular types of connections. MetaHub's core has special rules for handling connections one particular connection type, and that is the 'parent' label:
+
+```javascript
+
+// Attach flower
+flower.connect(garden, 'parent', 'child');
+
+// Detach flower
+garden.disconnect(flower);
+```
+
+Here, a flower is connected to a garden as the flower's parent, and then the flower is disconnected from the garden. In MetaHub , when a child is disconnected from its parent and the child has no other parent connections, that child is considered deleted and any remaining connections to that child are disconnected. Thus, the proper way to delete a meta_object is:
+
+```javascript
+
+flower.disconnect_all();
+```
+
+###Note:
+* disconnect_all() is fired when the last 'parent' connection is disconnected.
+* disconnect_all() checks to ensure that it does not cause an infinite loop.
+* A meta_object does not need to be connected to a parent. The possibility of MetaHub automatically firing disconnect_all() only happens once a parent-child relationship is established.
+* It is common for parent-child relationships to be defined as "a.connect(b, 'parent', 'child')", but MetaHub only considers the 'parent' label.  It is perfectly valid to have connections such as "a.connect(b, 'parent', 'item')".
 
 Meta_Object
 =========
@@ -123,7 +154,7 @@ null
 
 ### Description
 
-Creates a connection between two meta_objects. Each meta_object contains an internal dictionary of the meta_objects it is connected to. These connections can be queried based on their connection types.
+Creates a connection between two meta_objects. Each meta_object contains an internal dictionary of the meta_objects it is connected to.
 
 ### Example
 
