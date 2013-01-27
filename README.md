@@ -9,7 +9,7 @@ Now what if the file was aware that a program was looking to it for configuratio
 
 While MetaHub does not solve such issues in the file system, it does solve them in general programming. It provides a mechanism by which objects can easily define bidirectional references (known as "connections") to each other.  When something happens to one of these special objects, it can notify any or all of the objects it is connected to.
 
-This bidirectional approach is very powerful, but it is also not as resource efficient as the traditional one-way method.  Because of that, and the fact that most software is not written bidirectional, MetaHub is designed to easily integrate with more traditional programming so that you can smoothly mix the two.  It is not practical to define everything as a Meta_Connection.
+This bidirectional approach is very powerful, but it is also not as resource efficient as the traditional one-way method.  Because of that, and the fact that most software is not written bidirectional, MetaHub is designed to easily integrate with more traditional programming so that you can smoothly mix the two.  It is not practical to define everything as a MetaHub connection, and MetaHub itself uses both forms of reference.
 
 In MetaHub, a connection is the bidirectional reference between two objects, while a relationship is the data and rules that define how a particular connection behaves.  Type labels are the core of defining relationships.  When two meta_objects are connected, labels are used to categorize how the two meta_objects relate to each other.  For example:
 
@@ -41,7 +41,7 @@ Aside from syntax, there is a key difference between these two examples. In the 
 Parents and Children
 ------------------------------
 
-By themselves connection labels don't do very much.  They become more useful when code such as an events is attached to particular types of connections. MetaHub's core has special rules for handling connections one particular connection type, and that is the 'parent' label:
+By themselves connection labels don't do very much.  They become more useful when code such as an event is attached to particular types of connections. MetaHub's core has special rules for handling one particular connection type, and that is the 'parent' label:
 
 ```javascript
 
@@ -64,6 +64,7 @@ flower.disconnect_all();
 * disconnect_all() checks to ensure that it does not cause an infinite loop.
 * A meta_object does not need to be connected to a parent. The possibility of MetaHub automatically firing disconnect_all() only happens once a parent-child relationship is established.
 * It is common for parent-child relationships to be defined as "a.connect(b, 'parent', 'child')", but MetaHub only considers the 'parent' label.  It is perfectly valid to have connections such as "a.connect(b, 'parent', 'item')".
+* Two meta_objects can have multiple connections to each other by using different labels.
 
 Meta_Object
 =========
@@ -147,6 +148,58 @@ meta_object.connect (other, type, *other_type)
 *type*: A string that categorizes how the other meta_object relates to this meta_object.
 
 *other_type*: A string that categorizes how this meta_object relates to the other meta_object.  If this argument is not specified then it will be set to the same value as *type*.
+
+### Returns
+
+null
+
+### Description
+
+Creates a connection between two meta_objects. Each meta_object contains an internal dictionary of the meta_objects it is connected to.
+
+### Example
+
+```javascript
+
+var flower = Meta_Object.create();
+var garden = Meta_Object.create();
+
+garden.connect(flower, 'child', 'parent');
+// Now the flower sees the garden as its parent, and the garden sees the flower as its child.
+
+```
+meta_object.disconnect (other)
+-------------------------------------------------------------------
+
+### Arguments
+
+*other*: The meta_object to disconnect.
+
+### Returns
+
+null
+
+### Description
+
+Removes any connections that exist between the calling meta_object and the target meta_object.
+
+### Example
+
+```javascript
+
+book.disconnect(library);
+
+```
+meta_object.listen (other, event, action)
+-------------------------------------------------------------------
+
+### Arguments
+
+*other*: The meta_object to connect to.  If *other* is not a meta_object but is an object, it will be converted to a meta_object.
+
+*event*: A string that categorizes how the other meta_object relates to this meta_object.
+
+*action*: A string that categorizes how this meta_object relates to the other meta_object.  If this argument is not specified then it will be set to the same value as *type*.
 .
 ### Returns
 
