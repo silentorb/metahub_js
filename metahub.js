@@ -399,6 +399,8 @@ var MetaHub = (function () {
       Meta_Object.invoke_binding(source, this, 'change', name, value, old_value);
       return value;
     },
+    // This function is not called directly from Meta_Object,
+    // but is meant to be added to meta_objects.
     value: function(name, value, source) {
       if (value === undefined || value === this[name])
         return this[name];
