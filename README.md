@@ -195,11 +195,11 @@ meta_object.listen (other, event, action)
 
 ### Arguments
 
-*other*: The meta_object to connect to.  If *other* is not a meta_object but is an object, it will be converted to a meta_object.
+*other*: The meta_object to listen to  If *other* is not a meta_object but is an object, it will be converted to a meta_object.  If the calling meta_object and other are not already connected, a connection with default labels will be established.
 
-*event*: A string that categorizes how the other meta_object relates to this meta_object.
+*event*: A string label that determines which event to respond to.
 
-*action*: A string that categorizes how this meta_object relates to the other meta_object.  If this argument is not specified then it will be set to the same value as *type*.
+*action*: A function to call when the particular event is fired.
 .
 ### Returns
 
@@ -207,17 +207,13 @@ null
 
 ### Description
 
-Creates a connection between two meta_objects. Each meta_object contains an internal dictionary of the meta_objects it is connected to.
+Listens to the targeted object for a particular event.  Events are fired using meta_object.invoke().  Any arguments passed to invoke() are passed to the listener's _action_ function.  A meta_object can listen to itself.
 
 ### Example
 
 ```javascript
-
-var flower = Meta_Object.create();
-var garden = Meta_Object.create();
-
-garden.connect(flower, 'child', 'parent');
-// Now the flower sees the garden as its parent, and the garden sees the flower as its child.
-
+hero.listen(hero, "connect.sidekick", function(new_sidekick) {
+  new_sidekick.feed("bone");
+});
 ```
 
