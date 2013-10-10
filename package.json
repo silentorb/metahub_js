@@ -1,2 +1,15 @@
-{ "name" : "MetaHub",
-  "main" : "./metahub.js" }
+{
+  "name": "metahub",
+  "version": "0.0.0",
+  "description": "Relational class and event system",
+  "main": "metahub.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:silentorb/metahub.git"
+  },
+  "author": "Christopher W. Johnson",
+  "license": "MIT"
+}
