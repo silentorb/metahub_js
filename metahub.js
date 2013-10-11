@@ -3,6 +3,10 @@
 * User: Chris Johnson
 * Date: 9/18/13
 */
+/// <reference path="../ground/defs/when.d.ts"/>
+/// <reference path="../ground/lib/core/require.ts"/>
+var when = require('when');
+
 (function (MetaHub) {
     function remove(array, item) {
         if (typeof array.indexOf != 'function')
@@ -285,18 +289,6 @@ else
                 async: false
             };
 
-            if (typeof options == 'object') {
-                if (options.once) {
-                    event.method = function () {
-                        MetaHub.remove(other.events[name], event);
-                        method.apply(this, Array.prototype.slice.call(arguments));
-                    };
-                }
-                if (options.async) {
-                    event.async = true;
-                }
-            }
-
             if (options && options.first)
                 other.events[name].unshift(event);
 else
@@ -325,12 +317,16 @@ else
                 args[_i] = arguments[_i + 1];
             }
             if (!this.events[name])
-                return;
+                return when.resolve();
 
             var info = this.events[name];
-            for (var x = 0; x < info.length; ++x) {
-                info[x].method.apply(info[x].listener, args);
-            }
+
+            //      for (var x = 0; x < info.length; ++x) {
+            var promises = info.map(function (item) {
+                return item.method.apply(item.listener, args);
+            });
+            return when.all(promises);
+            //      }
         };
 
         Meta_Object.prototype.invoke_async = function (name) {

@@ -3,6 +3,10 @@
  * User: Chris Johnson
  * Date: 9/18/13
  */
+/// <reference path="../ground/defs/when.d.ts"/>
+/// <reference path="../ground/lib/core/require.ts"/>
+
+var when = require('when')
 
 export module MetaHub {
 
@@ -273,17 +277,17 @@ export module MetaHub {
         async: false
       }
 
-      if (typeof options == 'object') {
-        if (options.once) {
-          event.method = function () {
-            MetaHub.remove(other.events[name], event);
-            method.apply(this, Array.prototype.slice.call(arguments));
-          }
-        }
-        if (options.async) {
-          event.async = true;
-        }
-      }
+//      if (options && typeof options == 'object') {
+//        if (options.once) {
+//          event.method = function () {
+//            MetaHub.remove(other.events[name], event);
+//            method.apply(this, Array.prototype.slice.call(arguments));
+//          }
+//        }
+//        if (options.async) {
+//          event.async = true;
+//        }
+//      }
 
       if (options && options.first)
         other.events[name].unshift(event);
@@ -307,14 +311,15 @@ export module MetaHub {
       }
     }
 
-    invoke(name:string, ...args:any[]) {
+    invoke(name:string, ...args:any[]):Promise {
       if (!this.events[name])
-        return;
+        return when.resolve();
 
       var info = this.events[name];
-      for (var x = 0; x < info.length; ++x) {
-        info[x].method.apply(info[x].listener, args);
-      }
+//      for (var x = 0; x < info.length; ++x) {
+      var promises = info.map((item)=> item.method.apply(item.listener, args))
+      return when.all(promises)
+//      }
     }
 
     invoke_async(name) {
@@ -516,4 +521,4 @@ export module MetaHub {
   }
 }
 
-module.exports = MetaHub
+export = MetaHub

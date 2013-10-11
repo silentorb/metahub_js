@@ -1,9 +1,6 @@
-/**
-* Created with JetBrains PhpStorm.
-* User: Chris Johnson
-* Date: 9/18/13
-*/
-declare module MetaHub {
+/// <reference path="../ground/defs/when.d.ts" />
+/// <reference path="../ground/lib/core/require.d.ts" />
+export declare module MetaHub {
     function remove(array, item): void;
     function has_properties(obj): boolean;
     function is_array(obj): boolean;
@@ -28,7 +25,7 @@ declare module MetaHub {
         static invoke_binding(source, owner, name): void;
         public listen(other: Meta_Object, name: string, method: (...args: any[]) => any, options?): void;
         public unlisten(other, name): void;
-        public invoke(name: string, ...args: any[]): void;
+        public invoke(name: string, ...args: any[]): Promise;
         public invoke_async(name): void;
         public gather(name);
         public connect(other: Meta_Object, type: string, other_type?: string): void;
