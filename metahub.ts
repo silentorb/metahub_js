@@ -8,7 +8,7 @@
 
 var when = require('when')
 
-export module MetaHub {
+module MetaHub {
 
   export function remove(array, item) {
     // Make sure someone isn't using 'in' to loop through an array
@@ -521,4 +521,5 @@ export module MetaHub {
   }
 }
 
-export = MetaHub
+declare var exports
+exports = MetaHub

@@ -1,6 +1,7 @@
 /// <reference path="../ground/defs/when.d.ts" />
 /// <reference path="../ground/lib/core/require.d.ts" />
-export declare module MetaHub {
+declare var when;
+declare module MetaHub {
     function remove(array, item): void;
     function has_properties(obj): boolean;
     function is_array(obj): boolean;

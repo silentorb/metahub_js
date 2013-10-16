@@ -7,6 +7,7 @@
 /// <reference path="../ground/lib/core/require.ts"/>
 var when = require('when');
 
+var MetaHub;
 (function (MetaHub) {
     function remove(array, item) {
         if (typeof array.indexOf != 'function')
@@ -111,7 +112,7 @@ else
 
     // Pseudo GUID
     function guid() {
-        return S4() + S4() + "-" + S4() + "-" + S4();
+        return MetaHub.S4() + MetaHub.S4() + "-" + MetaHub.S4() + "-" + MetaHub.S4();
     }
     MetaHub.guid = guid;
 
@@ -512,9 +513,7 @@ else
         return Meta_Connection;
     })();
     MetaHub.Meta_Connection = Meta_Connection;
-})(exports.MetaHub || (exports.MetaHub = {}));
-var MetaHub = exports.MetaHub;
+})(MetaHub || (MetaHub = {}));
 
-module.exports = MetaHub;
-
+exports = MetaHub;
 //# sourceMappingURL=metahub.js.map
