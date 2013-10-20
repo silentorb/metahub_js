@@ -3,10 +3,9 @@
  * User: Chris Johnson
  * Date: 9/18/13
  */
-/// <reference path="../ground/defs/when.d.ts"/>
-/// <reference path="../ground/lib/core/require.ts"/>
+/// <reference path="defs/when.d.ts"/>
 
-var when = require('when')
+import when = require('when')
 
 module MetaHub {
 
@@ -311,7 +310,7 @@ module MetaHub {
       }
     }
 
-    invoke(name:string, ...args:any[]):Promise {
+    invoke(name:string, ...args:any[]):when.Promise {
       if (!this.events[name])
         return when.resolve();
 
@@ -520,6 +519,6 @@ module MetaHub {
     }
   }
 }
-
-declare var exports
-exports = MetaHub
+export = MetaHub
+//declare var exports
+//exports = MetaHub

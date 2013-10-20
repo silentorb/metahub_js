@@ -1,6 +1,5 @@
-/// <reference path="../ground/defs/when.d.ts" />
-/// <reference path="../ground/lib/core/require.d.ts" />
-declare var when;
+/// <reference path="defs/when.d.ts" />
+import when = require('when');
 declare module MetaHub {
     function remove(array, item): void;
     function has_properties(obj): boolean;
@@ -26,7 +25,7 @@ declare module MetaHub {
         static invoke_binding(source, owner, name): void;
         public listen(other: Meta_Object, name: string, method: (...args: any[]) => any, options?): void;
         public unlisten(other, name): void;
-        public invoke(name: string, ...args: any[]): Promise;
+        public invoke(name: string, ...args: any[]): when.Promise;
         public invoke_async(name): void;
         public gather(name);
         public connect(other: Meta_Object, type: string, other_type?: string): void;
@@ -46,3 +45,4 @@ declare module MetaHub {
         constructor(parent, other, type);
     }
 }
+export = MetaHub;
