@@ -1,1 +1,0 @@
-tsc metahub.ts --declaration --sourcemap --module commonjs
