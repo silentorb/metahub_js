@@ -3,9 +3,7 @@
  * User: Chris Johnson
  * Date: 9/18/13
  */
-/// <reference path="defs/when.d.ts"/>
-
-import when = require('when')
+/// <reference path="../defs/when.d.ts"/>
 
 module MetaHub {
 
@@ -257,7 +255,7 @@ module MetaHub {
 //       toString () {
 //        return this.meta_source + ":" + this.guid;
 //      };
-    listen(other:Meta_Object, name:string, method:(...args:any[])=>any, options = null) {
+    listen(other:Meta_Object, name:string, method, options = null) {
       if (typeof method !== 'function')
         throw new Error('Meta_Object.listen requires the passed method to be a function, not a "' + typeof method + '"');
 
@@ -310,7 +308,7 @@ module MetaHub {
       }
     }
 
-    invoke(name:string, ...args:any[]):when.Promise {
+    invoke(name:string, ...args:any[]):Promise {
       if (!this.events[name])
         return when.resolve();
 
@@ -321,31 +319,15 @@ module MetaHub {
 //      }
     }
 
-    invoke_async(name) {
-      var args = Array.prototype.slice.call(arguments, 1);
-      var finish = args[args.length - 1];
-      if (!this.events[name]) {
-        if (typeof finish == 'function')
-          finish.apply(this, args.slice(0, args.length - 1));
-        return;
-      }
+    map_invoke(name:string, ...args:any[]):Promise[] {
+      if (!this.events[name])
+        return [];
 
       var info = this.events[name];
-      var loop = function (x) {
-        if (x < info.length) {
-          // Use this eventually:
-          // args[args.length - 1] = loop.bind(this, x + 1);
-          args[args.length - 1] = function () {
-            loop(x + 1);
-          }
-          info[x].method.apply(info[x].listener, args);
-        }
-        else {
-          if (typeof finish == 'function')
-            finish.apply(this, args.slice(0, args.length - 1));
-        }
-      }
-      loop(0);
+//      for (var x = 0; x < info.length; ++x) {
+      var promises = info.map((item)=> item.method.apply(item.listener, args))
+      return promises
+//      }
     }
 
     gather(name) {
