@@ -1,21 +1,20 @@
+
 interface Deferred {
   promise: Promise;
   resolve(...args:any[]);
+  reject(...args:any[]);
 }
 
 interface Promise {
-  then(...args:any[]):Promise;
+  then(success, error?):Promise;
   map(...args:any[]):Promise;
-}
-
-declare module when {
-  function defer():Deferred;
-  function map(list, action);
-  function all(list);
-  function resolve(...args:any[]);
-
+  done(success?, error?);
+  otherwise(error);
 }
 
 declare module "when" {
-  export =when
+  function defer(): Deferred;
+  function map(list, action);
+  function all(list);
+  function resolve(...args:any[]);
 }

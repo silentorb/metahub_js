@@ -1,9 +1,5 @@
-/**
- * Created with JetBrains PhpStorm.
- * User: Chris Johnson
- * Date: 9/18/13
- */
-/// <reference path="../defs/when.d.ts"/>
+/// <reference path="defs/when.d.ts"/>
+import when = require('when')
 
 module MetaHub {
 
@@ -502,5 +498,3 @@ module MetaHub {
   }
 }
 export = MetaHub
-//declare var exports
-//exports = MetaHub

@@ -1,3 +1,5 @@
+var when = require('when');
+
 var MetaHub;
 (function (MetaHub) {
     function remove(array, item) {

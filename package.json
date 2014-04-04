@@ -1,6 +1,6 @@
 {
   "name": "metahub",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Relational class and event system",
   "main": "metahub.js",
   "scripts": {
@@ -11,5 +11,10 @@
     "url": "git@github.com:silentorb/metahub.git"
   },
   "author": "Christopher W. Johnson",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "grunt": "~0.4.x",
+    "grunt-ts": "~1.x.x",
+    "grunt-text-replace": "~0.3.x"
+  }
 }
