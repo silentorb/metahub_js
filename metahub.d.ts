@@ -44,4 +44,4 @@ declare module MetaHub {
         constructor(parent: any, other: any, type: any);
     }
 }
-declare module "metahub" { export = MetaHub }
+declare module "vineyard-metahub" { export = MetaHub }

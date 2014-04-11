@@ -1,6 +1,6 @@
 {
-  "name": "metahub",
-  "version": "0.1.0",
+  "name": "vineyard-metahub",
+  "version": "0.1.1",
   "description": "Relational class and event system",
   "main": "metahub.js",
   "scripts": {
@@ -15,6 +15,7 @@
   "devDependencies": {
     "grunt": "~0.4.x",
     "grunt-ts": "~1.x.x",
-    "grunt-text-replace": "~0.3.x"
+    "grunt-text-replace": "~0.3.x",
+    "grunt-contrib-watch": "~0.6.1"
   }
 }

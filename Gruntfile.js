@@ -2,6 +2,7 @@ module.exports = function (grunt) {
 
   grunt.loadNpmTasks('grunt-ts')
   grunt.loadNpmTasks('grunt-text-replace')
+  grunt.loadNpmTasks('grunt-contrib-watch')
 
   grunt.initConfig({
     ts: {
@@ -23,14 +24,14 @@ module.exports = function (grunt) {
         replacements: [
           {
             from: 'export = MetaHub;',
-            to: 'declare module "metahub" { export = MetaHub }'
+            to: 'declare module "vineyard-metahub" { export = MetaHub }'
           }
         ]
       }
     },
     watch: {
        vineyard: {
-        files: 'lib/**/*.ts',
+        files: 'metahub.ts',
         tasks: ['default']
       }
     }
