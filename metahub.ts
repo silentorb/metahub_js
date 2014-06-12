@@ -33,10 +33,6 @@ module MetaHub {
     return size;
   };
 
-  export function S4() {
-    return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
-  }
-
   export function values(source) {
     return Object.keys(source).map((key) => source[key])
   }
@@ -83,20 +79,10 @@ module MetaHub {
             destination[name] = {};
           else
             destination[name] = source[name];
-          //              else
-          //                info.value = source[name];
-
-          //              Object.defineProperty(destination, name, info);
-          //            }
         }
       }
     }
     return destination;
-  }
-
-  // Pseudo GUID
-  export function guid() {
-    return S4() + S4() + "-" + S4() + "-" + S4();
   }
 
   export function clone(source, names) {
@@ -141,30 +127,6 @@ module MetaHub {
     }
     return result;
   }
-
-//  function get_variables(source) {
-//    var result = {};
-//    if (typeof source == 'object' || typeof source == 'function') {
-//      for (var k in source) {
-//        if (source.hasOwnProperty(k) && typeof source[k] != 'function') {
-//          result[k] = source[k];
-//        }
-//      }
-//    }
-//    return result;
-//  }
-
-//  function serialize(source) {
-//    if (source.original_properties) {
-//      var temp = {};
-//      MetaHub.extend(temp, source, source.original_properties);
-//      return JSON.stringify(temp);
-//      //return JSON.stringify(source, source.original_properties);
-//    }
-//    else {
-//      return JSON.stringify(source);
-//    }
-//  };
 
   export class Meta_Object {
     public is_meta_object:boolean = true;
@@ -248,9 +210,6 @@ module MetaHub {
       }
     }
 
-//       toString () {
-//        return this.meta_source + ":" + this.guid;
-//      };
     listen(other:Meta_Object, name:string, method, options = null) {
       if (typeof method !== 'function')
         throw new Error('Meta_Object.listen requires the passed method to be a function, not a "' + typeof method + '"');
@@ -269,18 +228,6 @@ module MetaHub {
         listener: this,
         async: false
       }
-
-//      if (options && typeof options == 'object') {
-//        if (options.once) {
-//          event.method = function () {
-//            MetaHub.remove(other.events[name], event);
-//            method.apply(this, Array.prototype.slice.call(arguments));
-//          }
-//        }
-//        if (options.async) {
-//          event.async = true;
-//        }
-//      }
 
       if (options && options.first)
         other.events[name].unshift(event);
@@ -315,17 +262,6 @@ module MetaHub {
 //      }
     }
 
-    map_invoke(name:string, ...args:any[]):Promise[] {
-      if (!this.events[name])
-        return [];
-
-      var info = this.events[name];
-//      for (var x = 0; x < info.length; ++x) {
-      var promises = info.map((item)=> item.method.apply(item.listener, args))
-      return promises
-//      }
-    }
-
     gather(name) {
       var args = Array.prototype.slice.call(arguments, 1);
       if (!this.events[name])
@@ -345,19 +281,6 @@ module MetaHub {
       if (!other.is_meta_object)
         return;
 
-      // The process_connect function can be added to a Meta_Object
-      // to intercept potential connections
-//      if (typeof this.process_connect == 'function') {
-//        if (this.process_connect(other, type, other_type) === false) {
-//          return;
-//        }
-//        else if (typeof other.process_connect == 'function') {
-//          if (other.process_connect(this, other_type, type) === false) {
-//            return;
-//          }
-//        }
-//      }
-
       if (!Meta_Object.connect_objects(this, other, type)) {
         return;
       }
@@ -375,8 +298,6 @@ module MetaHub {
 
     disconnect_all(type) {
       if (type == undefined) {
-        // This is set to prevent repeated calls to disconnect_all.
-//        this.__disconnecting_everything = true;
         for (var x = this.internal_connections.length - 1; x >= 0; --x) {
           this.disconnect(this.internal_connections[x].other);
         }
@@ -389,8 +310,6 @@ module MetaHub {
           this.disconnect(connections[x]);
         }
       }
-
-//      delete this.__disconnecting_everything;
     }
 
     is_listening(other, name) {
