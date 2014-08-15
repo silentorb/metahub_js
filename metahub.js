@@ -38,11 +38,6 @@ var MetaHub;
     MetaHub.size = size;
     ;
 
-    function S4() {
-        return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
-    }
-    MetaHub.S4 = S4;
-
     function values(source) {
         return Object.keys(source).map(function (key) {
             return source[key];
@@ -98,11 +93,6 @@ var MetaHub;
         return destination;
     }
     MetaHub.extend = extend;
-
-    function guid() {
-        return S4() + S4() + "-" + S4() + "-" + S4();
-    }
-    MetaHub.guid = guid;
 
     function clone(source, names) {
         var result = {};
@@ -275,6 +265,10 @@ var MetaHub;
             }
         };
 
+        Meta_Object.prototype.has_event = function (name) {
+            return this.events[name] != undefined;
+        };
+
         Meta_Object.prototype.invoke = function (name) {
             var args = [];
             for (var _i = 0; _i < (arguments.length - 1); _i++) {
@@ -284,27 +278,10 @@ var MetaHub;
                 return when.resolve();
 
             var info = this.events[name];
-
             var promises = info.map(function (item) {
                 return item.method.apply(item.listener, args);
             });
             return when.all(promises);
-        };
-
-        Meta_Object.prototype.map_invoke = function (name) {
-            var args = [];
-            for (var _i = 0; _i < (arguments.length - 1); _i++) {
-                args[_i] = arguments[_i + 1];
-            }
-            if (!this.events[name])
-                return [];
-
-            var info = this.events[name];
-
-            var promises = info.map(function (item) {
-                return item.method.apply(item.listener, args);
-            });
-            return promises;
         };
 
         Meta_Object.prototype.gather = function (name) {

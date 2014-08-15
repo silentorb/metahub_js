@@ -251,15 +251,17 @@ module MetaHub {
       }
     }
 
+    has_event(name:string):boolean {
+      return this.events[name] != undefined
+    }
+
     invoke(name:string, ...args:any[]):Promise {
       if (!this.events[name])
         return when.resolve();
 
       var info = this.events[name];
-//      for (var x = 0; x < info.length; ++x) {
       var promises = info.map((item)=> item.method.apply(item.listener, args))
       return when.all(promises)
-//      }
     }
 
     gather(name) {

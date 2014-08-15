@@ -2493,7 +2493,16 @@ schema.Schema.prototype = {
 			++_g2;
 			source = Reflect.field(trellises,name2);
 			trellis = this.trellis_keys.get(name2);
-			trellis.initialize(source);
+			trellis.initialize1(source);
+		}
+		var _g3 = 0;
+		var _g12 = Reflect.fields(trellises);
+		while(_g3 < _g12.length) {
+			var name3 = _g12[_g3];
+			++_g3;
+			source = Reflect.field(trellises,name3);
+			trellis = this.trellis_keys.get(name3);
+			trellis.initialize2(source);
 		}
 	}
 	,get_trellis: function(name) {
@@ -2573,12 +2582,14 @@ schema.Trellis.prototype = {
 			this.add_property(name,Reflect.field(source.properties,name));
 		}
 	}
-	,initialize: function(source) {
+	,initialize1: function(source) {
 		var trellises = this.schema.trellises;
 		if(source.parent != null) {
 			var trellis = this.schema.get_trellis(source.parent);
 			this.set_parent(trellis);
 		}
+	}
+	,initialize2: function(source) {
 		if(source.properties != null) {
 			var _g = 0;
 			var _g1 = Reflect.fields(source.properties);

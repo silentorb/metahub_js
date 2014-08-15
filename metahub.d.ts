@@ -4,11 +4,9 @@ declare module MetaHub {
     function has_properties(obj: any): boolean;
     function is_array(obj: any): boolean;
     function size(obj: any): number;
-    function S4(): string;
     function values(source: any): {}[];
     function concat(destination: any, source: any): {};
     function extend(destination: any, source: any, names?: any): any;
-    function guid(): string;
     function clone(source: any, names: any): {};
     function get_connection(a: any, b: any): any;
     function filter(source: any, check: (value: any, key?: any, source?: any) => boolean): {};
@@ -24,8 +22,8 @@ declare module MetaHub {
         static invoke_binding(source: any, owner: any, name: any): void;
         public listen(other: Meta_Object, name: string, method: any, options?: any): void;
         public unlisten(other: any, name: any): void;
+        public has_event(name: string): boolean;
         public invoke(name: string, ...args: any[]): Promise;
-        public map_invoke(name: string, ...args: any[]): Promise[];
         public gather(name: any): any;
         public connect(other: Meta_Object, type: string, other_type?: string): void;
         public disconnect(other: any): void;
