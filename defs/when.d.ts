@@ -7,6 +7,7 @@ interface Deferred {
 
 interface Promise {
   then(success, error?):Promise;
+  catch(error):Promise;
   map(...args:any[]):Promise;
   done(success?, error?);
   otherwise(error);
